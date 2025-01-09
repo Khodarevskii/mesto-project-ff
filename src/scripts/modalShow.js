@@ -1,50 +1,37 @@
-import { inputShowText } from "./form"
+import { fillProfileFormInputs } from "./form.js"
+
+const popupAll = document.querySelectorAll('.popup')
 const editButton = document.querySelector('.profile__edit-button')
 const popupEdit = document.querySelector('.popup_type_edit')
 const addButton = document.querySelector('.profile__add-button')
 const popupAddCard = document.querySelector('.popup_type_new-card')
 
 
-function popupClose(popup){
-  popup.classList.remove('popup_is-opened')
+function closePopup(popup){ 
+  popup.classList.remove('popup_is-opened') 
+  
 }
 
-function popupOpened(popup){
+function openPopup(popup){
   popup.classList.add('popup_is-opened')
-
+  document.addEventListener('keydown',closePopupByEsc)
 }
 
-function popupHide(popup){
-  const popupCloseEsc = function(evt){
-    if (evt.key === "Escape"){
-      popupClose(popup)
-      document.removeEventListener('keydown',popupCloseEsc)
-    }
-   }
-
-    popup.addEventListener('click',function(evt){
-      if(evt.target.classList.contains('popup')){
-        popupClose(popup)
-      }
-      if(evt.target.classList.contains('popup__close')){
-        popupClose(popup)
-      }
-    })
-
-    document.addEventListener('keydown',popupCloseEsc)
-  }
+const closePopupByEsc = function(evt,popup){ 
+  if (evt.key === "Escape"){ 
+    closePopup(document.querySelector('.popup_is-opened')) 
+  } 
+ } 
 
   function popupEditShow(){
     editButton.addEventListener('click',function(){
-      popupOpened(popupEdit)
-      popupHide(popupEdit)
-      inputShowText()
+      openPopup(popupEdit)
+      fillProfileFormInputs()
     })
   }
   function popupAddShow(){
     addButton.addEventListener('click',function(){
-      popupOpened(popupAddCard)
-      popupHide(popupAddCard)
+      openPopup(popupAddCard)
     })
   }
-  export { popupEditShow,popupAddShow,popupHide,popupClose,popupEdit,popupAddCard,popupOpened}
+  export { popupEditShow,popupAddShow,closePopup,popupEdit,popupAddCard,openPopup,popupAll}

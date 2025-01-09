@@ -1,54 +1,48 @@
-import { popupClose,popupEdit,popupAddCard } from "./modalShow.js"
+import { closePopup,popupEdit,popupAddCard } from "./modalShow.js"
 import {renderCard} from './createCards.js'
-
-const editForm = document.forms[0]
+const editForm = document.forms['edit-profile']
 const editFormButton = editForm.querySelector('.button')
 
 const nameInput = editForm.elements.name
-const avatarName = document.querySelector('.profile__title')
+const userName = document.querySelector('.profile__title')
 
 const jobInput = editForm.elements.description
-const avatarDescription = document.querySelector('.profile__description')
+const userDescription = document.querySelector('.profile__description')
 
-const addCardForm = document.forms[1]
+const addCardForm = document.forms['new-place']
 const addCardFormButton = addCardForm.querySelector('.button')
 const nameCardInput = addCardForm.elements['place-name']
-const LinkCardInput = addCardForm.elements.link
+const linkCardInput = addCardForm.elements.link
 
-function TextForm(input,content){
+function setInputValueFrontTextContent(input,content){
     input.value = content.textContent
 }
 
-function textEdit(input,content){
+function setFrontTextContentValueInput(input,content){
     content.textContent = input.value
 }
 
-function inputShowText(){
-    TextForm(nameInput,avatarName)
-    TextForm(jobInput,avatarDescription)
+function fillProfileFormInputs(){
+    setInputValueFrontTextContent(nameInput,userName)
+    setInputValueFrontTextContent(jobInput,userDescription)
 }
 
-function handleFormSubmit(evt) {
+function handleFormEditSubmit(evt) {
     evt.preventDefault()
-    textEdit(nameInput,avatarName)
-    textEdit(jobInput,avatarDescription)
-    popupClose(popupEdit)
+    setFrontTextContentValueInput(nameInput,userName)
+    setFrontTextContentValueInput(jobInput,userDescription)
+    closePopup(popupEdit)
 }
 
-function cleanInput(input){
-    input.value = ''
-}
 
 function createUserCard(evt){
     evt.preventDefault()
-    console.log(LinkCardInput.value)
-    renderCard(LinkCardInput.value,nameCardInput.value)
-    popupClose(popupAddCard)
-    cleanInput(LinkCardInput)
-    cleanInput(nameCardInput)
+    renderCard(linkCardInput.value,nameCardInput.value)
+    closePopup(popupAddCard)
+    addCardForm.reset()
 }
 
 
-const editEventButton = editFormButton.addEventListener('submit',handleFormSubmit)
+const editEventButton = editFormButton.addEventListener('submit',handleFormEditSubmit)
 const addCardEventButton = addCardFormButton.addEventListener('submit',createUserCard)
-export {inputShowText,editEventButton,addCardEventButton}
+export {fillProfileFormInputs,editEventButton,addCardEventButton}
