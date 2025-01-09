@@ -1,14 +1,28 @@
 import {initialCards} from './cardsElements.js'
-import { renderCard } from './createCards.js';
+import {deleteElement,like,createElement} from './createCards.js'
 import '../pages/index.css';
 import avatarImage from '../images/avatar.jpg';
-import {popupEditShow,popupAddShow,openPopup,closePopup,popupAll} from './modalShow.js';
-import { editEventButton,addCardEventButton } from './form.js';
+import {openPopup} from './modalShow.js';
+import { initSubmitListeners,fillProfileFormInputs } from './form.js';
 avatarImage = new URL ('../images/avatar.jpg', import.meta.url) ;
 const elementPlace = document.querySelector('.places__list');
 const  imagePopup  = document.querySelector('.popup_type_image') 
 const imagePopupLink = imagePopup.querySelector('.popup__image') 
 const imagePopupCaption = imagePopup.querySelector('.popup__caption') 
+
+
+const editButton = document.querySelector('.profile__edit-button')
+const popupEdit = document.querySelector('.popup_type_edit')
+const addButton = document.querySelector('.profile__add-button')
+const popupAddCard = document.querySelector('.popup_type_new-card')
+
+
+
+
+function renderCard(img, text) {
+  return elementPlace.prepend(createElement(img, text,deleteElement,like,openImagePopup))
+}
+
 
 initialCards.forEach(function (elements) {
     return renderCard(elements.link, elements.name);
@@ -20,23 +34,21 @@ function openImagePopup(textValue,imageValue){
   openPopup(imagePopup)
 }
 
-function initPopupCloseByClick(popup){
-  popup.addEventListener('click',function(evt){ 
-    if(evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close')){ 
-      closePopup(popup) 
-    }
-  }) 
+function popupEditShow(){
+  editButton.addEventListener('click',function(){
+    openPopup(popupEdit)
+    fillProfileFormInputs()
+  })
+}
+function popupAddShow(){
+  addButton.addEventListener('click',function(){
+    openPopup(popupAddCard)
+  })
 }
 
 
 
-
-popupAll.forEach(function(popup){
-  initPopupCloseByClick(popup)
-})
-
 popupEditShow()
 popupAddShow()
-editEventButton
-addCardEventButton
-export{elementPlace,imagePopup,imagePopupLink,imagePopupCaption,openImagePopup,initPopupCloseByClick}
+initSubmitListeners()
+export{elementPlace,imagePopup,imagePopupLink,imagePopupCaption,openImagePopup,renderCard,editButton,popupEdit,addButton,popupAddCard}

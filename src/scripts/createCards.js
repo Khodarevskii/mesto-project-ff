@@ -1,4 +1,3 @@
-import {elementPlace,openImagePopup,initPopupCloseByClick} from "./index.js"
 const element = document.querySelector('#card-template');
 
 const deleteElement = function (evt) { 
@@ -7,8 +6,6 @@ const deleteElement = function (evt) {
 function like(evt){
   evt.target.classList.toggle('card__like-button_is-active')
 }
-
-
 
 function createElement(imageValue, textValue, deleteElement,like,openImagePopup) { 
     const userElementPlace = element.content.querySelector('.places__item').cloneNode(true);
@@ -25,9 +22,4 @@ function createElement(imageValue, textValue, deleteElement,like,openImagePopup)
     return userElementPlace;
   }
 
-  function renderCard(img, text) {
-    return elementPlace.prepend(createElement(img, text,deleteElement,like,openImagePopup))
-  }
-
-
-export{renderCard}
+export{deleteElement,like,createElement}
