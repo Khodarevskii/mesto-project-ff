@@ -2,14 +2,18 @@ import {initialCards} from './cardsElements.js'
 import {deleteElement,like,createElement} from './createCards.js'
 import '../pages/index.css';
 import avatarImage from '../images/avatar.jpg';
+
 import {openPopup} from './modalShow.js';
 import { initSubmitListeners,fillProfileFormInputs } from './form.js';
 avatarImage = new URL ('../images/avatar.jpg', import.meta.url) ;
+let allPopup
+function getAllPopup(){
+  return  allPopup = document.querySelectorAll('.popup')
+  }
 const elementPlace = document.querySelector('.places__list');
 const  imagePopup  = document.querySelector('.popup_type_image') 
 const imagePopupLink = imagePopup.querySelector('.popup__image') 
 const imagePopupCaption = imagePopup.querySelector('.popup__caption') 
-
 
 const editButton = document.querySelector('.profile__edit-button')
 const popupEdit = document.querySelector('.popup_type_edit')
@@ -22,6 +26,7 @@ const popupAddCard = document.querySelector('.popup_type_new-card')
 function renderCard(img, text) {
   return elementPlace.prepend(createElement(img, text,deleteElement,like,openImagePopup))
 }
+
 
 
 initialCards.forEach(function (elements) {
@@ -51,4 +56,4 @@ function popupAddShow(){
 popupEditShow()
 popupAddShow()
 initSubmitListeners()
-export{elementPlace,imagePopup,imagePopupLink,imagePopupCaption,openImagePopup,renderCard,editButton,popupEdit,addButton,popupAddCard}
+export{getAllPopup,elementPlace,imagePopup,imagePopupLink,imagePopupCaption,openImagePopup,renderCard,editButton,popupEdit,addButton,popupAddCard}

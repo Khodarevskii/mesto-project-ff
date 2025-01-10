@@ -1,3 +1,4 @@
+import {getAllPopup} from './'
 
 function closePopup(popup){ 
   popup.classList.remove('popup_is-opened') 
@@ -7,8 +8,8 @@ function closePopup(popup){
 function openPopup(popup){
   popup.classList.add('popup_is-opened')
   document.addEventListener('keydown',closePopupByEsc)
-  initPopupCloseByClick(popup)
 }
+
 
 function initPopupCloseByClick(popup){
   popup.addEventListener('click',function(evt){ 
@@ -17,6 +18,11 @@ function initPopupCloseByClick(popup){
     }
   }) 
 }
+
+getAllPopup().forEach(function(popup){ 
+  initPopupCloseByClick(popup) 
+}) 
+
 
 const closePopupByEsc = function(evt){ 
   if (evt.key === "Escape"){ 
