@@ -1,4 +1,4 @@
-import {getAllPopup} from './'
+
 
 function closePopup(popup){ 
   popup.classList.remove('popup_is-opened') 
@@ -19,9 +19,6 @@ function initPopupCloseByClick(popup){
   }) 
 }
 
-getAllPopup().forEach(function(popup){ 
-  initPopupCloseByClick(popup) 
-}) 
 
 
 const closePopupByEsc = function(evt){ 
@@ -31,4 +28,4 @@ const closePopupByEsc = function(evt){
  } 
 
 
-  export {closePopup,openPopup}
+  export {closePopup,openPopup,initPopupCloseByClick}

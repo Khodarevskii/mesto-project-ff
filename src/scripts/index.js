@@ -3,13 +3,12 @@ import {deleteElement,like,createElement} from './createCards.js'
 import '../pages/index.css';
 import avatarImage from '../images/avatar.jpg';
 
-import {openPopup} from './modalShow.js';
+import {openPopup,initPopupCloseByClick} from './modalShow.js';
 import { initSubmitListeners,fillProfileFormInputs } from './form.js';
 avatarImage = new URL ('../images/avatar.jpg', import.meta.url) ;
-let allPopup
-function getAllPopup(){
-  return  allPopup = document.querySelectorAll('.popup')
-  }
+
+const allPopup = document.querySelectorAll('.popup')
+
 const elementPlace = document.querySelector('.places__list');
 const  imagePopup  = document.querySelector('.popup_type_image') 
 const imagePopupLink = imagePopup.querySelector('.popup__image') 
@@ -27,7 +26,9 @@ function renderCard(img, text) {
   return elementPlace.prepend(createElement(img, text,deleteElement,like,openImagePopup))
 }
 
-
+allPopup.forEach(function(popup){ 
+  initPopupCloseByClick(popup) 
+}) 
 
 initialCards.forEach(function (elements) {
     return renderCard(elements.link, elements.name);
@@ -56,4 +57,4 @@ function popupAddShow(){
 popupEditShow()
 popupAddShow()
 initSubmitListeners()
-export{getAllPopup,elementPlace,imagePopup,imagePopupLink,imagePopupCaption,openImagePopup,renderCard,editButton,popupEdit,addButton,popupAddCard}
+export{elementPlace,imagePopup,imagePopupLink,imagePopupCaption,openImagePopup,renderCard,editButton,popupEdit,addButton,popupAddCard}
