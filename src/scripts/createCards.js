@@ -1,3 +1,5 @@
+import { enableValidation } from './form.js';
+
 const element = document.querySelector('#card-template');
 
 const deleteElement = function (evt) { 

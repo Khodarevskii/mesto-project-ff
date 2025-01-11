@@ -5,6 +5,7 @@ import avatarImage from '../images/avatar.jpg';
 
 import {openPopup,initPopupCloseByClick} from './modalShow.js';
 import { initSubmitListeners,fillProfileFormInputs } from './form.js';
+import { enableValidation,clearInputError} from './validation.js';
 avatarImage = new URL ('../images/avatar.jpg', import.meta.url) ;
 
 const allPopup = document.querySelectorAll('.popup')
@@ -44,11 +45,14 @@ function popupEditShow(){
   editButton.addEventListener('click',function(){
     openPopup(popupEdit)
     fillProfileFormInputs()
+    enableValidation()
   })
 }
 function popupAddShow(){
   addButton.addEventListener('click',function(){
     openPopup(popupAddCard)
+    enableValidation()
+    
   })
 }
 

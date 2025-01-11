@@ -21,6 +21,7 @@ function initPopupCloseByClick(popup){
 
 
 
+
 const closePopupByEsc = function(evt){ 
   if (evt.key === "Escape"){ 
     closePopup(document.querySelector('.popup_is-opened')) 

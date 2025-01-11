@@ -23,6 +23,7 @@ function setFrontTextContentValueInput(input,content){
 function fillProfileFormInputs(){
     setInputValueFrontTextContent(nameInput,userName)
     setInputValueFrontTextContent(jobInput,userDescription)
+
 }
 
 function handleFormEditSubmit(evt) {
@@ -40,8 +41,9 @@ function createUserCard(evt){
     addCardForm.reset()
 }
 
+
 const initSubmitListeners = () => {
     editForm.addEventListener('submit',handleFormEditSubmit);
     addCardForm.addEventListener('submit',createUserCard);
 }
-export {fillProfileFormInputs,initSubmitListeners}
+export {fillProfileFormInputs,initSubmitListeners,}
