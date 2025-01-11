@@ -10,7 +10,7 @@ avatarImage = new URL ('../images/avatar.jpg', import.meta.url) ;
 const allPopup = document.querySelectorAll('.popup')
 
 const elementPlace = document.querySelector('.places__list');
-const  imagePopup  = document.querySelector('.popup_type_image') 
+const imagePopup  = document.querySelector('.popup_type_image') 
 const imagePopupLink = imagePopup.querySelector('.popup__image') 
 const imagePopupCaption = imagePopup.querySelector('.popup__caption') 
 
