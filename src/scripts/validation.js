@@ -1,89 +1,80 @@
 
-let enableValidation ={
-    showInputError : (formElement, inputElement, errorMessage) => {
-        const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
-        inputElement.classList.add('popup__input_type_error');
-        errorElement.textContent = errorMessage;
-        errorElement.classList.add('popup__input-error');
-      },
-      
-       clearValidation : (profileForm, validationConfig) => {
-        const errorElement = profileForm.querySelector(`.${inputElement.name}-error`);
-        inputElement.classList.remove('popup__input_type_error');
-        errorElement.classList.remove('popup__input-error');
-        errorElement.textContent = '';
-      },
-    
-       clearInputError : (form) =>{
-        let allErrorPlace = Array.from(form.querySelectorAll('.popup__input-error')) 
-        let allErrorInput =  Array.from(form.querySelectorAll('.popup__input')) 
-        allErrorInput.forEach((inputElement)=>{
-            inputElement.classList.remove('popup__input_type_error');
-        })
-        allErrorPlace.forEach((error)=>{
-            error.classList.remove('popup__input-error');
-            error.textContent = ''
-        })
-      },
-      
-       checkInputValidity : (formElement, inputElement) => {
-        if (!inputElement.validity.valid) {
-          showInputError(formElement, inputElement, inputElement.validationMessage);
-        } else {
-          clearValidation(formElement, inputElement);
-        }
-      },
-      
-       setEventListeners : (formElement) => {
-        const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-        const buttonElement = formElement.querySelector('.popup__button');
-        toggleButtonState(inputList, buttonElement);
-        inputList.forEach((inputElement) => {
-          inputElement.addEventListener('input', function () {
-            checkInputValidity(formElement, inputElement);
-            toggleButtonState(inputList, buttonElement);
-          });
-        });
-      },
-      
-      formSelector: (formElement)=>{
-        const formList = Array.from(document.querySelectorAll(formElement));
-        formList.forEach((formElement) => {
-          formElement.addEventListener('submit', function (evt) {
-            evt.preventDefault()
-          });
-          formList.forEach((form) => {
-            setEventListeners(form);
-          });
-        });
-      },
-    
-       hasInvalidInput : (inputList) => {
-        console.log(inputList)
-        return inputList.some((inputElement) => {
-            if (inputElement.validity.patternMismatch) {
-    
-            inputElement.setCustomValidity("Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы");
-          } else {
-    
-            inputElement.setCustomValidity("");
-          }
-        if (!inputElement.validity.valid){
-          return true
-        }else{
-         return false
-        }
-        })
-      },
-    
-       toggleButtonState  : (inputList,buttonElement) => {
-        if(hasInvalidInput(inputList)){
-          buttonElement.setAttribute('disabled','true')
-        }else{
-           buttonElement.removeAttribute('disabled')
-        }
-      }
-    
-}
+objectSettings = {}
 
-export{enableValidation}
+const showInputError = (formSelector,inputElement ) => {
+    const errorElement = formSelector.querySelector(`.${inputElement.name}-error`);
+    inputElement.classList.add(inputErrorClass);
+    errorElement.textContent = errorMessage;
+    errorElement.classList.add(errorClass);
+  };
+  
+  const clearValidation = ( inputErrorClass,errorClass) => {
+    const errorElement = profileForm.querySelector(`.${inputElement.name}-error`);
+    inputElement.classList.remove(inputErrorClass);
+    errorElement.classList.remove(errorClass);
+    errorElement.textContent = '';
+  };
+  
+  const clearInputError = ( inputErrorClass,errorClass) =>{
+    let allErrorPlace = Array.from(form.querySelectorAll(errorClass)) 
+    let allErrorInput =  Array.from(form.querySelectorAll(inputSelector)) 
+    allErrorInput.forEach((inputElement)=>{
+        inputElement.classList.remove(inputErrorClass);
+    })
+    allErrorPlace.forEach((error)=>{
+        error.classList.remove(errorClass);
+        error.textContent = ''
+    })
+  }
+  
+  const checkInputValidity = (inputElement,formSelector) => {
+    if (!inputElement.validity.valid) {
+      showInputError(formSelector, inputElement, inputElement.validationMessage);
+    } else {
+      clearValidation(formSelector, inputElement);
+    }
+  };
+  
+  const setEventListeners = (formSelector,inputSelector) => {
+    const inputSelectorForm = Array.from(formSelector.querySelectorAll(`${inputSelector}`));
+    const submitButtonSelector = formSelector.querySelector(submitButtonSelector);
+    toggleButtonState(inputSelectorForm, submitButtonSelector);
+    inputSelectorForm.forEach((inputElement) => {
+      inputElement.addEventListener('input', function () {
+        checkInputValidity(formSelector, inputElement);
+        toggleButtonState(inputSelectorForm, submitButtonSelector);
+      });
+    });
+  };
+  
+  function enableValidation(object){
+        setEventListeners(object.formSelector,object.inputSelector);
+
+  }
+  const hasInvalidInput = (inputSelector,inputElement) => {
+    
+    return inputSelector.some((inputElement) => {
+        if (inputElement.validity.patternMismatch) {
+  
+        inputElement.setCustomValidity("Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы");
+      } else {
+  
+        inputElement.setCustomValidity("");
+      }
+    if (!inputElement.validity.valid){
+      return true
+    }else{
+     return false
+    }
+    })
+  }
+  
+  const toggleButtonState  = (inputSelector,submitButtonSelector,inactiveButtonClass) => {
+    if(hasInvalidInput(inputSelector)){
+      submitButtonSelector.classList.add(inactiveButtonClass)
+    }else{
+        submitButtonSelector.classList.remove(inactiveButtonClass)
+    }
+  }
+
+export{enableValidation,clearInputError}

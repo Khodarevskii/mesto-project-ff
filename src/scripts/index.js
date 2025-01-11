@@ -45,14 +45,19 @@ function popupEditShow(){
   editButton.addEventListener('click',function(){
     openPopup(popupEdit)
     fillProfileFormInputs()
-    enableValidation({ formSelector: '.popup__form'})
+    enableValidation({
+      formSelector: '.popup__forms',
+      inputSelector: '.popup__inputs',
+      submitButtonSelector: '.popup__button',
+      inactiveButtonClass: 'popup__button_disabled',
+      inputErrorClass: 'popup__input_type_error',
+      errorClass: '.popup__input-error'
+    }) 
   })
 }
 function popupAddShow(){
   addButton.addEventListener('click',function(){
     openPopup(popupAddCard)
-    enableValidation()
-    
   })
 }
 
