@@ -5,7 +5,7 @@ import avatarImage from '../images/avatar.jpg';
 
 import {openPopup,initPopupCloseByClick} from './modalShow.js';
 import { initSubmitListeners,fillProfileFormInputs } from './form.js';
-import { enableValidation,clearInputError} from './validation.js';
+import { enableValidation,clearValidation,validationConfig} from './validation.js';
 avatarImage = new URL ('../images/avatar.jpg', import.meta.url) ;
 
 const allPopup = document.querySelectorAll('.popup')
@@ -27,6 +27,15 @@ function renderCard(img, text) {
   return elementPlace.prepend(createElement(img, text,deleteElement,like,openImagePopup))
 }
 
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}); 
+
 allPopup.forEach(function(popup){ 
   initPopupCloseByClick(popup) 
 }) 
@@ -45,21 +54,17 @@ function popupEditShow(){
   editButton.addEventListener('click',function(){
     openPopup(popupEdit)
     fillProfileFormInputs()
-    enableValidation({
-      formSelector: '.popup__forms',
-      inputSelector: '.popup__inputs',
-      submitButtonSelector: '.popup__button',
-      inactiveButtonClass: 'popup__button_disabled',
-      inputErrorClass: 'popup__input_type_error',
-      errorClass: '.popup__input-error'
-    }) 
+    clearValidation(popupEdit,validationConfig)
   })
 }
 function popupAddShow(){
   addButton.addEventListener('click',function(){
     openPopup(popupAddCard)
+    clearValidation(popupAddCard,validationConfig)
   })
 }
+
+
 
 
 
