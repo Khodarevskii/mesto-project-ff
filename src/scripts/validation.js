@@ -74,5 +74,12 @@ const showInputError = (formElement, inputElement, errorMessage) => {
     })
   }
 
+  const toggleButtonState  = (inputList,buttonElement) => {
+    if(hasInvalidInput(inputList)){
+      buttonElement.setAttribute('disabled','true')
+    }else{
+       buttonElement.removeAttribute('disabled')
+    }
+  }
 
 export{enableValidation,clearInputError}
