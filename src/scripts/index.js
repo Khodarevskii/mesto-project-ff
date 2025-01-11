@@ -45,7 +45,7 @@ function popupEditShow(){
   editButton.addEventListener('click',function(){
     openPopup(popupEdit)
     fillProfileFormInputs()
-    enableValidation()
+    enableValidation({ formSelector: '.popup__form'})
   })
 }
 function popupAddShow(){
