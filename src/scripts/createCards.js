@@ -1,24 +1,33 @@
-import { deleteCards,likeToggle} from "./api";
+import { deleteCard,likeToggle} from "./api";
 
 const element = document.querySelector('#card-template');
 const deleteElement = function (evt) { 
-  evt.target.closest('.card').remove() 
-  let cardId =  evt.target.closest('.card').getAttribute('id')
-  deleteCards(cardId)
+  const cardId =  evt.target.closest('.card').getAttribute('id')
+  deleteCard(cardId)
+  .then(()=>{
+    evt.target.closest('.card').remove() 
+  })
+
 }
 function like(evt){
   evt.target.classList.toggle('card__like-button_is-active')
-  let cardId =  evt.target.closest('.card').getAttribute('id')
+  const cardId =  evt.target.closest('.card').getAttribute('id')
   const cardLikeButtonCounter =  evt.target.closest('.card').querySelector('.card__like-button-counter')
   if(evt.target.classList.contains('card__like-button_is-active')){
-    likeToggle(cardId,'PUT',cardLikeButtonCounter)
+    likeToggle(cardId,'true')
+    .then(()=>{
+      cardLikeButtonCounter.textContent++
+    })
   }else{
-    likeToggle(cardId,'DELETE',cardLikeButtonCounter)
+    likeToggle(cardId,'false')
+    .then(()=>{
+      cardLikeButtonCounter.textContent--
+    })
   }
  
 }
 
-function createElement(textValue, imageValue,id,likeCounter,avatarId,cardId,deleteElement,like,openImagePopup) { 
+function createElement(textValue, imageValue,id,userId,cardOwnerId,likeCounter,deleteElement,like,openImagePopup) { 
     const userElementPlace = element.content.querySelector('.places__item').cloneNode(true);
     userElementPlace.setAttribute('id',`${id}`)
     const cardImage = userElementPlace.querySelector('.card__image')
@@ -30,7 +39,7 @@ function createElement(textValue, imageValue,id,likeCounter,avatarId,cardId,dele
     cardLikeButtonCounter.textContent = likeCounter
     cardTitle.textContent = textValue
     const deleteButton = userElementPlace.querySelector('.card__delete-button');
-    if(avatarId == cardId){
+    if(userId == cardOwnerId){
       deleteButton.addEventListener('click',deleteElement)
     }else{
       deleteButton.remove()

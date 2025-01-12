@@ -6,19 +6,13 @@ const showInputError = (formElement, inputElement, errorMessage) => {
     errorElement.classList.add(`${validationConfig.errorClass}`);
   };
   
-  const clearValidation = (profileForm, validationConfig) => {
-    const popupAll  =  Array.from(profileForm.querySelectorAll(`${validationConfig.inputSelector}`));
-    const errorElement = profileForm.querySelector(`.${validationConfig.errorClass}`);
-    const popupError =  profileForm.querySelector(`.${validationConfig.inputErrorClass}`)
-    const submitButtonSelector = profileForm.querySelector(`${validationConfig.submitButtonSelector}`)
-    if(errorElement){
-        errorElement.classList.remove(`${validationConfig.errorClass}`);
-        errorElement.textContent = '';
-    }
-    if(popupError){
-        popupError.classList.remove(`${validationConfig.inputErrorClass}`);
-    }
-    toggleButtonState(popupAll,submitButtonSelector)
+  const clearValidation = (form, validationConfig) => {
+    const inputAll  =  Array.from(form.querySelectorAll(`${validationConfig.inputSelector}`));
+    const submitButton = form.querySelector(`${validationConfig.submitButtonSelector}`)
+    inputAll.forEach((element)=>{
+      hideInputError(form,element)
+    })
+    toggleButtonState(inputAll,submitButton)
   };
   const hideInputError = (formElement, inputElement) => {
     const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
@@ -32,8 +26,15 @@ const showInputError = (formElement, inputElement, errorMessage) => {
   const checkInputValidity = (formElement, inputElement) => {
     if (!inputElement.validity.valid) {
       showInputError(formElement, inputElement, inputElement.validationMessage);
-    } else {
+    } 
+    else {
         hideInputError(formElement, inputElement);
+    }
+    if (inputElement.validity.patternMismatch) { 
+   
+      inputElement.setCustomValidity(inputElement.dataset.errorMessage); 
+    } else { 
+      inputElement.setCustomValidity(""); 
     }
   };
   
@@ -64,19 +65,9 @@ const showInputError = (formElement, inputElement, errorMessage) => {
   const hasInvalidInput = (inputList) => {
     
     return inputList.some((inputElement) => {
-        if (inputElement.validity.patternMismatch) {
-  
-        inputElement.setCustomValidity(inputElement.dataset.errorMessage);
-      } else {
-  
-        inputElement.setCustomValidity("");
-      }
-    if (!inputElement.validity.valid){
-      return true
-    }else{
-     return false
-    }
-    })
+      return !inputElement.validity.valid;
+  })
+
   }
   
   const toggleButtonState  = (inputList,buttonElement) => {

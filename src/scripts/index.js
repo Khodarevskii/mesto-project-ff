@@ -1,7 +1,7 @@
 import {deleteElement,like,createElement} from './createCards.js'
 import '../pages/index.css';
 import avatarImage from '../images/avatar.jpg';
-import {getUserPrimaryKey,setFrontAvatarInfo,newAvatarPicture} from './api.js'
+import {newAvatarPicture,getInitialCards,getUserData} from './api.js'
 import {openPopup,initPopupCloseByClick} from './modalShow.js';
 import { initSubmitListeners,fillProfileFormInputs,userDescription,userName,nameInput,jobInput } from './form.js';
 import { enableValidation,clearValidation,validationConfig} from './validation.js';
@@ -24,12 +24,9 @@ const editAvatar = document.querySelector('.popup_type_edit-avatar')
 const avatar = document.querySelector('.profile__image')
 
 
-function renderCard( text,img,id,likeCounter,avatarId,cardId) {
-  return elementPlace.prepend(createElement(text, img,id,likeCounter,avatarId,cardId,deleteElement,like,openImagePopup))
+function renderCard( text,img,id,userId,cardOwnerId,likeCounter) {
+  return elementPlace.prepend(createElement(text, img,id,userId,cardOwnerId,likeCounter,deleteElement,like,openImagePopup))
 }
-
-getUserPrimaryKey(renderCard)
-
 
 enableValidation({
   formSelector: '.popup__form',
@@ -76,8 +73,23 @@ function popupEditAvatarShow(){
   })
 }
 
-setFrontAvatarInfo(userName,userDescription)
-newAvatarPicture(avatar)
+Promise.all([
+  getInitialCards(),
+  getUserData()
+]).then(results => {
+  results[0].forEach((element)=>{
+    return renderCard(element.name,element.link,element._id,results[1]._id,element.owner._id,element.likes.length)
+  })
+});
+
+getUserData()
+.then((res)=>{
+  userName.textContent = res.name
+  userDescription.textContent = res.about
+  avatar.style.backgroundImage =`url(${res.avatar})`
+})
+
+
 
 popupEditShow()
 popupAddShow()

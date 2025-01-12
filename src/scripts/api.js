@@ -1,13 +1,15 @@
 import { avatar } from ".";
 
 const  handleResponse = () =>{
-      res => {
-      if (res.ok) {
-        return res.json();
-      }
+  return res => {
+    if (res.ok) {
+      return res.json();
+    }else{
       return Promise.reject(`Ошибка: ${res.status}`);
     }
-} 
+    
+  } 
+}
 const config = {
     baseUrl: 'https://nomoreparties.co/v1/wff-cohort-29',
     headers: {
@@ -15,18 +17,16 @@ const config = {
       'Content-Type': 'application/json'
     }
   }
-  export const getInitialCards = (avatarId,renderCard) => {
+  export const getInitialCards = () => {
     return fetch(`${config.baseUrl}/cards`, {
       headers: config.headers
     })
     .then (handleResponse())
-      .then((res)=>{
-        res.forEach((elem)=>{ 
-            return  renderCard(elem.name,elem.link,elem._id,elem.likes.length,avatarId,elem.owner._id)
-        })
-      })
+    .catch((error)=>{
+      console.log(error)
+    })
   } 
-  export const createNewCards = (name,link,renderCard) => {
+  export const createNewCard = (name,link) => {
     return fetch(`${config.baseUrl}/cards`, {
       method:'POST',
       headers: config.headers,
@@ -36,96 +36,72 @@ const config = {
       })
     })
     
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((res)=>{
-        
-        return  renderCard(res.name,res.link,res.owner._id)
+    .then (handleResponse())
+    .catch((error)=>{
+      console.log(error)
     })
 }
 
-export const getUserPrimaryKey = (renderCard) => {
-    return fetch(`${config.baseUrl}/users/me`, {
-      headers: config.headers,
-    })
-    
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((res)=>{
-       return getInitialCards(res._id,renderCard)
-    })
-}
 
-export const pushAvatarInfo = (nameInput,jobInput) => {
+export const getUserData = () => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    headers: config.headers
+  })
+  .then (handleResponse())
+  .catch((error)=>{
+    console.log(error)
+  })
+} 
+
+export const pushUserInfo = (name,about) => {
     return fetch(`${config.baseUrl}/users/me`, {
         method:'PATCH',
         headers: config.headers,
         body: JSON.stringify({
-        name: nameInput.value,
-        about: jobInput.value
+        name: name,
+        about: about
       })
     })
     
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-}
-
-export const setFrontAvatarInfo = (userName,userDescription) => {
-    return fetch(`${config.baseUrl}/users/me`, {
-        headers: config.headers,
+    .then (handleResponse())
+    .catch((error)=>{
+      console.log(error)
     })
-    
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-
-      .then((res) => {
-        userName.textContent =  res.name
-        userDescription.textContent = res.about
-      })
 }
 
 
 
-
-export const deleteCards = (cardId) => {
+export const deleteCard = (cardId) => {
     return fetch(`${config.baseUrl}/cards/${cardId}`, {
         method:'DELETE',
       headers: config.headers,
     })
     
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
+    .then (handleResponse())
+    .catch((error)=>{
+      console.log(error)
+    })
 }
 
-export const likeToggle = (cardId,toggle,cardLikeButtonCounter) => {
+export const likeToggle = (cardId,isLiked) => {
+  if(isLiked){
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-        method:`${toggle}`,
-      headers: config.headers,
-    })
-    
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-      .then((res)=>{
-        cardLikeButtonCounter.textContent  =res.likes.length
-      })
+      method:`PUT`,
+    headers: config.headers,
+  })
+  .then (handleResponse())
+  
+  }else{
+    return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+      method:`DELETE`,
+    headers: config.headers,
+  })
+  .then (handleResponse())
+  .catch((error)=>{
+    console.log(error)
+  })
+  }
+  
 }
 
 
@@ -134,33 +110,17 @@ export const customizeAvatar = (link) => {
         method:'PATCH',
         headers: config.headers,
         body: JSON.stringify({
-        avatar: link.value
+        avatar: link
       })
     })
     
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-}
-
-
-export const newAvatarPicture = (avatar) => {
-    return fetch(`${config.baseUrl}/users/me`, {
-        headers: config.headers,
+    .then (handleResponse())
+    .catch((error)=>{
+      console.log(error)
     })
-    
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
-
-      .then((res) => {
-        avatar.style.backgroundImage =`url(${res.avatar})`
-      })
 }
+
+
 
 
 

@@ -1,6 +1,6 @@
 import { closePopup } from "./modalShow.js"
 import {renderCard,popupEdit,popupAddCard,avatar,editAvatar} from './index.js'
-import {createNewCards,setFrontAvatarInfo,customizeAvatar} from './api.js'
+import {createNewCard,pushUserInfo,customizeAvatar} from './api.js'
 const editForm = document.forms['edit-profile']
 
 const nameInput = editForm.elements.name
@@ -29,28 +29,55 @@ function fillProfileFormInputs(){
 }
 function handleFormEditSubmit(evt) {
     evt.preventDefault()
-    setFrontAvatarInfo(nameInput,jobInput)
-    setFrontTextContentValueInput(nameInput,userName)
     renderLoading(true,popupEdit.querySelector('.popup__button'))
-    setFrontTextContentValueInput(jobInput,userDescription)
-    closePopup(popupEdit)
+    pushUserInfo(nameInput.value,jobInput.value)
+    .then(()=>{
+      setFrontTextContentValueInput(nameInput,userName)
+      setFrontTextContentValueInput(jobInput,userDescription)
+      closePopup(popupEdit)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+    .finally(()=>{
+      renderLoading(false,popupEdit.querySelector('.popup__button'))
+    })
+  
+
 }
 
 function createUserCard(evt){
     evt.preventDefault()
-    createNewCards(nameCardInput.value,linkCardInput.value,renderCard)
     renderLoading(true,popupAddCard.querySelector('.popup__button'))
-    closePopup(popupAddCard)
-    addCardForm.reset()
+    createNewCard(nameCardInput.value,linkCardInput.value)
+    .then((res)=>{
+      renderCard(res.name,res.link,res._id,res.owner._id,res.owner._id)
+      closePopup(popupAddCard)
+      addCardForm.reset()
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+    .finally(()=>{
+      renderLoading(false,popupAddCard.querySelector('.popup__button'))
+    })
 }
 function createNewAvatar(evt){
   evt.preventDefault()
-
   renderLoading(true,editAvatar.querySelector('.popup__button'))
-  avatar.style.backgroundImage =`url(${editAvatarInput.value})`
-  customizeAvatar(editAvatarInput)
-  editAvatarForm.reset()
-  closePopup(editAvatar)
+  customizeAvatar(editAvatarInput.value)
+  .then((res)=>{
+     avatar.style.backgroundImage =`url(${res.avatar})`
+     editAvatarForm.reset()
+     closePopup(editAvatar)
+  })
+  .catch((error)=>{
+    console.log(error)
+  })
+  .finally(()=>{
+    renderLoading(false,editAvatar.querySelector('.popup__button'))
+  })
+
 }
 
 
