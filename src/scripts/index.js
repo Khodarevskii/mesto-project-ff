@@ -79,14 +79,14 @@ Promise.all([
 ]).then(results => {
   results[0].forEach((element)=>{
      renderCard(element.name,element.link,element._id,results[1]._id,element.owner._id,element.likes.length)
-     userName.textContent = results[1].name
-     userDescription.textContent = results[1].about
-     avatar.style.backgroundImage =`url(${results[1].avatar})`
   })  
-  .catch((error)=>{
-    console.log(error)
-  })
-});
+  userName.textContent = results[1].name
+  userDescription.textContent = results[1].about
+  avatar.style.backgroundImage =`url(${results[1].avatar})`
+})
+.catch((error)=>{
+  console.log(error)
+})
 
 
 
