@@ -1,6 +1,13 @@
 import { avatar } from ".";
 
-
+const  handleResponse = () =>{
+      res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    }
+} 
 const config = {
     baseUrl: 'https://nomoreparties.co/v1/wff-cohort-29',
     headers: {
@@ -12,11 +19,7 @@ const config = {
     return fetch(`${config.baseUrl}/cards`, {
       headers: config.headers
     })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-      })
+    .then (handleResponse())
       .then((res)=>{
         res.forEach((elem)=>{ 
             return  renderCard(elem.name,elem.link,elem._id,elem.likes.length,avatarId,elem.owner._id)
