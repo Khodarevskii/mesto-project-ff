@@ -1,5 +1,6 @@
 import { closePopup } from "./modalShow.js"
-import {renderCard,popupEdit,popupAddCard} from './index.js'
+import {renderCard,popupEdit,popupAddCard,avatar,editAvatar} from './index.js'
+import {createNewCards,setFrontAvatarInfo,customizeAvatar} from './api.js'
 const editForm = document.forms['edit-profile']
 
 const nameInput = editForm.elements.name
@@ -12,6 +13,8 @@ const addCardForm = document.forms['new-place']
 const nameCardInput = addCardForm.elements['place-name']
 const linkCardInput = addCardForm.elements.link
 
+const editAvatarForm = document.forms['edit-avatar']
+const editAvatarInput = editAvatarForm.elements.link
 function setInputValueFrontTextContent(input,content){
     input.value = content.textContent
 }
@@ -24,111 +27,46 @@ function fillProfileFormInputs(){
     setInputValueFrontTextContent(nameInput,userName)
     setInputValueFrontTextContent(jobInput,userDescription)
 }
-
 function handleFormEditSubmit(evt) {
     evt.preventDefault()
+    setFrontAvatarInfo(nameInput,jobInput)
     setFrontTextContentValueInput(nameInput,userName)
+    renderLoading(true,popupEdit.querySelector('.popup__button'))
     setFrontTextContentValueInput(jobInput,userDescription)
     closePopup(popupEdit)
 }
 
-
 function createUserCard(evt){
     evt.preventDefault()
-    renderCard(linkCardInput.value,nameCardInput.value)
+    createNewCards(nameCardInput.value,linkCardInput.value,renderCard)
+    renderLoading(true,popupAddCard.querySelector('.popup__button'))
     closePopup(popupAddCard)
     addCardForm.reset()
 }
+function createNewAvatar(evt){
+  evt.preventDefault()
+
+  renderLoading(true,editAvatar.querySelector('.popup__button'))
+  avatar.style.backgroundImage =`url(${editAvatarInput.value})`
+  customizeAvatar(editAvatarInput)
+  editAvatarForm.reset()
+  closePopup(editAvatar)
+}
+
 
 const initSubmitListeners = () => {
     editForm.addEventListener('submit',handleFormEditSubmit);
     addCardForm.addEventListener('submit',createUserCard);
-}
-export {fillProfileFormInputs,initSubmitListeners}
-
-
-
-const showInputError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
-  inputElement.classList.add('popup__input_type_error');
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error');
-};
-
-const clearValidation = (profileForm, validationConfig) => {
-  const errorElement = profileForm.querySelector(`.${inputElement.name}-error`);
-  inputElement.classList.remove('popup__input_type_error');
-  errorElement.classList.remove('popup__input-error');
-  errorElement.textContent = '';
-};
-
-const clearInputError = (form) =>{
-  let allErrorPlace = Array.from(form.querySelectorAll('.popup__input-error')) 
-  let allErrorInput =  Array.from(form.querySelectorAll('.popup__input')) 
-  allErrorInput.forEach((inputElement)=>{
-      inputElement.classList.remove('popup__input_type_error');
-  })
-  allErrorPlace.forEach((error)=>{
-      error.classList.remove('popup__input-error');
-      error.textContent = ''
-  })
+    editAvatarForm.addEventListener('submit',createNewAvatar);
 }
 
-const checkInputValidity = (formElement, inputElement) => {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    clearValidation(formElement, inputElement);
-  }
-};
 
-const setEventListeners = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-  const buttonElement = formElement.querySelector('.popup__button');
-  toggleButtonState(inputList, buttonElement);
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', function () {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
-    });
-  });
-};
-
-function enableValidation(){
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', function (evt) {
-      evt.preventDefault()
-    });
-    formList.forEach((form) => {
-      setEventListeners(form);
-    });
-  });
-}
-const hasInvalidInput = (inputList) => {
-  
-  return inputList.some((inputElement) => {
-      if (inputElement.validity.patternMismatch) {
-
-      inputElement.setCustomValidity("Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы");
-    } else {
-
-      inputElement.setCustomValidity("");
-    }
-  if (!inputElement.validity.valid){
-    return true
+function renderLoading(isLoading,button){
+  if(isLoading){
+    button.textContent = 'Сохранение...'
   }else{
-   return false
-  }
-  })
-}
-
-const toggleButtonState  = (inputList,buttonElement) => {
-  if(hasInvalidInput(inputList)){
-    buttonElement.setAttribute('disabled','true')
-  }else{
-     buttonElement.removeAttribute('disabled')
+    button.textContent = 'Сохраненить'
   }
 }
 
-export{enableValidation,clearInputError}
+export {fillProfileFormInputs,initSubmitListeners,userName,userDescription,nameInput,jobInput}

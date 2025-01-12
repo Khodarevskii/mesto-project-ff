@@ -1,10 +1,10 @@
-import {initialCards} from './cardsElements.js'
 import {deleteElement,like,createElement} from './createCards.js'
 import '../pages/index.css';
 import avatarImage from '../images/avatar.jpg';
-
+import {getUserPrimaryKey,setFrontAvatarInfo,newAvatarPicture} from './api.js'
 import {openPopup,initPopupCloseByClick} from './modalShow.js';
-import { initSubmitListeners,fillProfileFormInputs } from './form.js';
+import { initSubmitListeners,fillProfileFormInputs,userDescription,userName,nameInput,jobInput } from './form.js';
+import { enableValidation,clearValidation,validationConfig} from './validation.js';
 avatarImage = new URL ('../images/avatar.jpg', import.meta.url) ;
 
 const allPopup = document.querySelectorAll('.popup')
@@ -20,20 +20,35 @@ const addButton = document.querySelector('.profile__add-button')
 const popupAddCard = document.querySelector('.popup_type_new-card')
 
 
+const editAvatar = document.querySelector('.popup_type_edit-avatar')
+const avatar = document.querySelector('.profile__image')
 
 
-function renderCard(img, text) {
-  return elementPlace.prepend(createElement(img, text,deleteElement,like,openImagePopup))
+function renderCard( text,img,id,likeCounter,avatarId,cardId) {
+  return elementPlace.prepend(createElement(text, img,id,likeCounter,avatarId,cardId,deleteElement,like,openImagePopup))
 }
+
+getUserPrimaryKey(renderCard)
+
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}); 
+
+
+
 
 allPopup.forEach(function(popup){ 
   initPopupCloseByClick(popup) 
 }) 
 
-initialCards.forEach(function (elements) {
-    return renderCard(elements.link, elements.name);
-  });
-  
+
+
 function openImagePopup(textValue,imageValue){
   imagePopupLink.setAttribute('src',imageValue)
   imagePopupCaption.textContent = textValue
@@ -44,17 +59,28 @@ function popupEditShow(){
   editButton.addEventListener('click',function(){
     openPopup(popupEdit)
     fillProfileFormInputs()
+    clearValidation(popupEdit,validationConfig)
   })
 }
 function popupAddShow(){
   addButton.addEventListener('click',function(){
     openPopup(popupAddCard)
+    clearValidation(popupAddCard,validationConfig)
   })
 }
 
+function popupEditAvatarShow(){
+  avatar.addEventListener('click',function(){
+    openPopup(editAvatar)
+    clearValidation(editAvatar,validationConfig)
+  })
+}
 
+setFrontAvatarInfo(userName,userDescription)
+newAvatarPicture(avatar)
 
 popupEditShow()
 popupAddShow()
+popupEditAvatarShow()
 initSubmitListeners()
-export{elementPlace,imagePopup,imagePopupLink,imagePopupCaption,openImagePopup,renderCard,editButton,popupEdit,addButton,popupAddCard}
+export{elementPlace,imagePopup,imagePopupLink,imagePopupCaption,openImagePopup,renderCard,editButton,popupEdit,addButton,popupAddCard,avatar,editAvatar}

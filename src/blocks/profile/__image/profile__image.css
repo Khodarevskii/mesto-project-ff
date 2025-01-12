@@ -7,8 +7,41 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  position:relative;
+}
+.profile__image::before{
+  content: '';
+  width: 0;
+  height: 0;
+  transition: 1.5s  ease;
+}
+.profile__image:hover::before{
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-color: black;
+
 }
 
+.profile__image::after{
+  transition: 0.5s  ease;
+  content: '';
+  background-image: url('../../../images/edit-icon.svg');
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  right: -50%;
+  height: 0px;
+  width: 0px;
+}
+.profile__image:hover::after{
+  height: 100%;
+  width: 100%;
+}
 @media screen and (max-width: 740px) {
   .profile__image {
     margin: 0 10px 0 0;
