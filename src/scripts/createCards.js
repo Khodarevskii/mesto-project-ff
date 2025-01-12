@@ -7,7 +7,9 @@ const deleteElement = function (evt) {
   .then(()=>{
     evt.target.closest('.card').remove() 
   })
-
+  .catch((error)=>{
+    console.log(error)
+  })
 }
 function like(evt){
   evt.target.classList.toggle('card__like-button_is-active')
@@ -18,12 +20,19 @@ function like(evt){
     .then(()=>{
       cardLikeButtonCounter.textContent++
     })
+    .catch((error)=>{
+      console.log(error)
+    })
   }else{
     likeToggle(cardId,'false')
     .then(()=>{
       cardLikeButtonCounter.textContent--
     })
+    .catch((error)=>{
+      console.log(error)
+    })
   }
+  
  
 }
 

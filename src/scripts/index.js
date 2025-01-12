@@ -82,6 +82,9 @@ Promise.all([
      userName.textContent = results[1].name
      userDescription.textContent = results[1].about
      avatar.style.backgroundImage =`url(${results[1].avatar})`
+  })  
+  .catch((error)=>{
+    console.log(error)
   })
 });
 
