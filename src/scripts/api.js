@@ -1,4 +1,3 @@
-import { avatar } from ".";
 
 const  handleResponse = () =>{
   return res => {

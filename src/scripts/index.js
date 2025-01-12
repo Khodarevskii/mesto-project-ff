@@ -3,7 +3,7 @@ import '../pages/index.css';
 import avatarImage from '../images/avatar.jpg';
 import {newAvatarPicture,getInitialCards,getUserData} from './api.js'
 import {openPopup,initPopupCloseByClick} from './modalShow.js';
-import { initSubmitListeners,fillProfileFormInputs,userDescription,userName,nameInput,jobInput } from './form.js';
+import { initSubmitListeners,fillProfileFormInputs,userDescription,userName } from './form.js';
 import { enableValidation,clearValidation,validationConfig} from './validation.js';
 avatarImage = new URL ('../images/avatar.jpg', import.meta.url) ;
 
