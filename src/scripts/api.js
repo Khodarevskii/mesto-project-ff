@@ -89,6 +89,9 @@ export const likeToggle = (cardId,isLiked) => {
     headers: config.headers,
   })
   .then (handleResponse())
+  .catch((error)=>{
+    console.log(error)
+  })
   
   }else{
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
