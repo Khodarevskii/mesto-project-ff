@@ -16,7 +16,6 @@ function like(evt){
   const cardLikeButtonCounter =  evt.target.closest('.card').querySelector('.card__like-button-counter')
   likeToggle(cardId, isLiked) 
           .then((res) => {
-            console.log(res)
             evt.target.classList.toggle('card__like-button_is-active');
              cardLikeButtonCounter.textContent = res.likes.length; 
           })
