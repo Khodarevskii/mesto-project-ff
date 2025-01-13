@@ -1,5 +1,4 @@
 import { deleteCard,likeToggle} from "./api";
-
 const element = document.querySelector('#card-template');
 const deleteElement = function (evt) { 
   const cardId =  evt.target.closest('.card').getAttribute('id')
@@ -12,31 +11,18 @@ const deleteElement = function (evt) {
   })
 }
 function like(evt){
-  evt.target.classList.toggle('card__like-button_is-active')
+  const isLiked = evt.target.classList.contains('card__like-button_is-active');
   const cardId =  evt.target.closest('.card').getAttribute('id')
   const cardLikeButtonCounter =  evt.target.closest('.card').querySelector('.card__like-button-counter')
-  if(evt.target.classList.contains('card__like-button_is-active')){
-    likeToggle(cardId,'true')
-    .then(()=>{
-      cardLikeButtonCounter.textContent++
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
-  }else{
-    likeToggle(cardId,'false')
-    .then(()=>{
-      cardLikeButtonCounter.textContent--
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
-  }
-  
- 
+  likeToggle(cardId, isLiked) 
+          .then((res) => {
+            console.log(res)
+            evt.target.classList.toggle('card__like-button_is-active');
+             cardLikeButtonCounter.textContent = res.likes.length; 
+          })
+  .catch(err => console.log(err));
 }
-
-function createElement(textValue, imageValue,id,userId,cardOwnerId,likeCounter,deleteElement,like,openImagePopup) { 
+function createElement(textValue, imageValue,id,userId,cardOwnerId,likeCounter,deleteElement,like,likesArray,openImagePopup) { 
     const userElementPlace = element.content.querySelector('.places__item').cloneNode(true);
     userElementPlace.setAttribute('id',`${id}`)
     const cardImage = userElementPlace.querySelector('.card__image')
@@ -48,6 +34,13 @@ function createElement(textValue, imageValue,id,userId,cardOwnerId,likeCounter,d
     cardLikeButtonCounter.textContent = likeCounter
     cardTitle.textContent = textValue
     const deleteButton = userElementPlace.querySelector('.card__delete-button');
+    if(likesArray !== undefined){
+      likesArray.forEach((item)=>{
+        if(item._id === userId){
+          cardLikeButton.classList.add('card__like-button_is-active')
+        }
+      })
+    }
     if(userId == cardOwnerId){
       deleteButton.addEventListener('click',deleteElement)
     }else{

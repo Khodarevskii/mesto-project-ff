@@ -1,4 +1,11 @@
-let validationConfig = {}
+let validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}
 const showInputError = (formElement, inputElement, errorMessage) => {
     const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
     inputElement.classList.add(`${validationConfig.inputErrorClass}`);
@@ -24,17 +31,17 @@ const showInputError = (formElement, inputElement, errorMessage) => {
 
   
   const checkInputValidity = (formElement, inputElement) => {
-    if (!inputElement.validity.valid) {
-      showInputError(formElement, inputElement, inputElement.validationMessage);
-    } 
-    else {
-        hideInputError(formElement, inputElement);
-    }
     if (inputElement.validity.patternMismatch) { 
    
       inputElement.setCustomValidity(inputElement.dataset.errorMessage); 
     } else { 
       inputElement.setCustomValidity(""); 
+    }
+    if (!inputElement.validity.valid) {
+      showInputError(formElement, inputElement, inputElement.validationMessage);
+    } 
+    else {
+        hideInputError(formElement, inputElement);
     }
   };
   
@@ -50,8 +57,7 @@ const showInputError = (formElement, inputElement, errorMessage) => {
     });
   };
   
-  function enableValidation(object){
-    validationConfig = object
+  function enableValidation(validationConfig){
     const formList = Array.from(document.querySelectorAll(`${validationConfig.formSelector}`));
     formList.forEach((formElement) => {
       formElement.addEventListener('submit', function (evt) {

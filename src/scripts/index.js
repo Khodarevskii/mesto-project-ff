@@ -1,7 +1,7 @@
 import {deleteElement,like,createElement} from './createCards.js'
 import '../pages/index.css';
 import avatarImage from '../images/avatar.jpg';
-import {newAvatarPicture,getInitialCards,getUserData} from './api.js'
+import {getInitialCards,getUserData} from './api.js'
 import {openPopup,initPopupCloseByClick} from './modalShow.js';
 import { initSubmitListeners,fillProfileFormInputs,userDescription,userName } from './form.js';
 import { enableValidation,clearValidation,validationConfig} from './validation.js';
@@ -24,18 +24,11 @@ const editAvatar = document.querySelector('.popup_type_edit-avatar')
 const avatar = document.querySelector('.profile__image')
 
 
-function renderCard( text,img,id,userId,cardOwnerId,likeCounter) {
-  return elementPlace.prepend(createElement(text, img,id,userId,cardOwnerId,likeCounter,deleteElement,like,openImagePopup))
+function renderCard( text,img,id,userId,cardOwnerId,likeCounter,likesArray) {
+  return elementPlace.prepend(createElement(text, img,id,userId,cardOwnerId,likeCounter,deleteElement,like,likesArray,openImagePopup))
 }
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-}); 
+enableValidation(validationConfig); 
 
 
 
@@ -78,7 +71,7 @@ Promise.all([
   getUserData()
 ]).then(results => {
   results[0].forEach((element)=>{
-     renderCard(element.name,element.link,element._id,results[1]._id,element.owner._id,element.likes.length)
+     renderCard(element.name,element.link,element._id,results[1]._id,element.owner._id,element.likes.length,element.likes)
   })  
   userName.textContent = results[1].name
   userDescription.textContent = results[1].about

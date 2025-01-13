@@ -21,9 +21,7 @@ const config = {
       headers: config.headers
     })
     .then (handleResponse())
-    .catch((error)=>{
-      console.log(error)
-    })
+    
   } 
   export const createNewCard = (name,link) => {
     return fetch(`${config.baseUrl}/cards`, {
@@ -36,9 +34,7 @@ const config = {
     })
     
     .then (handleResponse())
-    .catch((error)=>{
-      console.log(error)
-    })
+    
 }
 
 
@@ -47,9 +43,7 @@ export const getUserData = () => {
     headers: config.headers
   })
   .then (handleResponse())
-  .catch((error)=>{
-    console.log(error)
-  })
+  
 } 
 
 export const pushUserInfo = (name,about) => {
@@ -63,9 +57,7 @@ export const pushUserInfo = (name,about) => {
     })
     
     .then (handleResponse())
-    .catch((error)=>{
-      console.log(error)
-    })
+    
 }
 
 
@@ -77,21 +69,17 @@ export const deleteCard = (cardId) => {
     })
     
     .then (handleResponse())
-    .catch((error)=>{
-      console.log(error)
-    })
+    
 }
 
 export const likeToggle = (cardId,isLiked) => {
-  if(isLiked){
+  if(!isLiked){
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
       method:`PUT`,
     headers: config.headers,
   })
   .then (handleResponse())
-  .catch((error)=>{
-    console.log(error)
-  })
+  
   
   }else{
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
@@ -99,9 +87,7 @@ export const likeToggle = (cardId,isLiked) => {
     headers: config.headers,
   })
   .then (handleResponse())
-  .catch((error)=>{
-    console.log(error)
-  })
+  
   }
   
 }
@@ -117,9 +103,7 @@ export const customizeAvatar = (link) => {
     })
     
     .then (handleResponse())
-    .catch((error)=>{
-      console.log(error)
-    })
+    
 }
 
 

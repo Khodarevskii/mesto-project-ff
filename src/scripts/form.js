@@ -31,9 +31,9 @@ function handleFormEditSubmit(evt) {
     evt.preventDefault()
     renderLoading(true,popupEdit.querySelector('.popup__button'))
     pushUserInfo(nameInput.value,jobInput.value)
-    .then(()=>{
-      setFrontTextContentValueInput(nameInput,userName)
-      setFrontTextContentValueInput(jobInput,userDescription)
+    then(data => {
+      userName.textContent = data.name;
+      userDescription.textContent = data.about;
       closePopup(popupEdit)
     })
     .catch((error)=>{
